@@ -73,18 +73,18 @@ export default function FloatingNav() {
               </div>
             </button>
 
-            {/* Divider */}
-            <div className="w-px h-5 bg-white/[0.1] flex-shrink-0" />
+            {/* Divider — hidden on mobile */}
+            <div className="hidden sm:block w-px h-5 bg-white/[0.1] flex-shrink-0" />
 
-            {/* ── Nav links ── */}
-            <div className="flex items-center gap-0.5 px-2">
+            {/* ── Nav links — hidden on mobile ── */}
+            <div className="hidden sm:flex items-center gap-0.5 px-2">
               {LINKS.map(({ id, label }) => {
                 const isActive = active === id;
                 return (
                   <button
                     key={id}
                     onClick={() => scrollTo(id)}
-                    className={`relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold outline-none focus-visible:ring-1 focus-visible:ring-accent/50 ${
+                    className={`relative px-4 py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold outline-none focus-visible:ring-1 focus-visible:ring-accent/50 ${
                       id === "wholesome" ? "hidden md:block" : ""
                     }`}
                   >
@@ -109,15 +109,15 @@ export default function FloatingNav() {
               })}
             </div>
 
-            {/* Divider */}
-            <div className="w-px h-5 bg-white/[0.1] flex-shrink-0" />
+            {/* Divider — hidden on mobile */}
+            <div className="hidden sm:block w-px h-5 bg-white/[0.1] flex-shrink-0" />
 
             {/* ── Order Now CTA ── */}
             <motion.button
               onClick={() => scrollTo("order")}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="bg-accent hover:bg-accent/90 text-[#150c05] ml-1.5 mr-1.5 sm:ml-2 sm:mr-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold transition-colors shadow-lg shadow-accent/20 flex-shrink-0"
+              className="bg-accent hover:bg-accent/90 text-[#150c05] ml-2 mr-2 px-5 py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold transition-colors shadow-lg shadow-accent/20 flex-shrink-0"
             >
               Order Now
             </motion.button>
