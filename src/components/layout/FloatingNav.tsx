@@ -17,17 +17,15 @@ const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
 export default function FloatingNav() {
-  const [ready,     setReady]     = useState(false);
-  const [active,    setActive]    = useState<string | null>(null);
-  const [menuOpen,  setMenuOpen]  = useState(false);
+  const [ready,    setReady]    = useState(false);
+  const [active,   setActive]   = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Animate in once on mount (slight delay so page renders first)
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 500);
     return () => clearTimeout(t);
   }, []);
 
-  // Active section tracking
   useEffect(() => {
     const track = () => {
       const threshold = window.scrollY + window.innerHeight * 0.38;
@@ -45,26 +43,39 @@ export default function FloatingNav() {
 
   return (
     <>
-      {/* ── Mobile nav popup (above pill) ── */}
+      {/* ── Mobile nav popup ── */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0,  scale: 1     }}
-            exit={{    opacity: 0, y: 10, scale: 0.96  }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-[72px] left-1/2 -translate-x-1/2 z-50 sm:hidden bg-[#150c05]/96 backdrop-blur-2xl rounded-2xl border border-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.5)] overflow-hidden min-w-[160px]"
-          >
-            {LINKS.map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => { scrollTo(id); setMenuOpen(false); }}
-                className="flex items-center w-full px-6 py-4 text-[10px] uppercase tracking-[0.3em] font-bold text-white/55 hover:text-white hover:bg-white/[0.06] transition-colors border-b border-white/[0.05] last:border-0"
-              >
-                {label}
-              </button>
-            ))}
-          </motion.div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+              className="fixed inset-0 z-40 sm:hidden"
+            />
+            {/* Popup */}
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0,  scale: 1    }}
+              exit={{    opacity: 0, y: 12, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed bottom-[76px] left-1/2 -translate-x-1/2 z-50 sm:hidden bg-[#150c05] border border-white/[0.1] rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.6)] min-w-[180px] overflow-hidden"
+            >
+              {LINKS.map(({ id, label }, i) => (
+                <button
+                  key={id}
+                  onClick={() => { scrollTo(id); setMenuOpen(false); }}
+                  className={`flex items-center w-full px-7 py-4 text-[10px] uppercase tracking-[0.32em] font-bold text-white/55 hover:text-white hover:bg-white/[0.07] active:bg-white/[0.1] transition-colors ${
+                    i < LINKS.length - 1 ? "border-b border-white/[0.06]" : ""
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
@@ -78,18 +89,18 @@ export default function FloatingNav() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
           >
-            <div className="relative flex items-center bg-[#150c05]/94 backdrop-blur-2xl rounded-full border border-white/[0.08] shadow-[0_12px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+            <div className="relative flex items-center bg-[#150c05]/95 backdrop-blur-2xl rounded-full border border-white/[0.09] shadow-[0_12px_50px_rgba(0,0,0,0.5)]">
 
               {/* Inner accent ring */}
-              <div className="pointer-events-none absolute inset-0 rounded-full border border-accent/[0.14] z-10" />
+              <div className="pointer-events-none absolute inset-0 rounded-full border border-accent/[0.14]" />
 
               {/* ── Logo ── */}
               <button
                 onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); setMenuOpen(false); }}
-                className="flex items-center pl-4 pr-3 py-3 sm:pl-5 sm:pr-4 opacity-75 hover:opacity-100 transition-opacity flex-shrink-0"
+                className="flex items-center pl-5 pr-4 py-3 opacity-80 hover:opacity-100 transition-opacity flex-shrink-0"
                 aria-label="Back to top"
               >
-                <div className="relative w-[56px] h-[22px] sm:w-[68px] sm:h-[26px]">
+                <div className="relative w-[72px] h-[26px]">
                   <Image
                     src="/assets/images/logo-white.png"
                     alt="DOUGH & CO."
@@ -104,12 +115,19 @@ export default function FloatingNav() {
               <button
                 onClick={() => setMenuOpen((o) => !o)}
                 aria-label="Toggle menu"
-                className="sm:hidden flex items-center justify-center w-9 h-9 mx-1 text-white/50 hover:text-white/90 transition-colors flex-shrink-0"
+                className="sm:hidden flex items-center justify-center px-3 py-3 text-white/50 hover:text-white/90 active:text-white transition-colors flex-shrink-0"
               >
-                {menuOpen
-                  ? <X    className="w-4 h-4" />
-                  : <Menu className="w-4 h-4" />
-                }
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={menuOpen ? "x" : "menu"}
+                    initial={{ opacity: 0, rotate: -45 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{    opacity: 0, rotate:  45 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {menuOpen ? <X className="w-[15px] h-[15px]" /> : <Menu className="w-[15px] h-[15px]" />}
+                  </motion.span>
+                </AnimatePresence>
               </button>
 
               {/* Divider — desktop only */}
@@ -136,9 +154,7 @@ export default function FloatingNav() {
                       )}
                       <span
                         className={`relative z-10 transition-colors duration-200 ${
-                          isActive
-                            ? "text-white/90"
-                            : "text-white/35 hover:text-white/65"
+                          isActive ? "text-white/90" : "text-white/35 hover:text-white/65"
                         }`}
                       >
                         {label}
@@ -154,9 +170,8 @@ export default function FloatingNav() {
               {/* ── Order Now CTA ── */}
               <motion.button
                 onClick={() => { scrollTo("order"); setMenuOpen(false); }}
-                whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                className="bg-accent hover:bg-accent/90 text-[#150c05] ml-2 mr-2 px-5 py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold transition-colors shadow-lg shadow-accent/20 flex-shrink-0"
+                className="bg-accent hover:bg-accent/90 text-[#150c05] ml-1.5 mr-1.5 sm:ml-2 sm:mr-2 px-4 sm:px-5 py-2.5 rounded-full text-[10px] uppercase tracking-[0.22em] sm:tracking-[0.28em] font-bold transition-colors shadow-md shadow-accent/20 flex-shrink-0 whitespace-nowrap"
               >
                 Order Now
               </motion.button>
