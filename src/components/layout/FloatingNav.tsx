@@ -59,10 +59,10 @@ export default function FloatingNav() {
             {/* ── Logo ── */}
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center pl-5 pr-4 py-3 opacity-75 hover:opacity-100 transition-opacity flex-shrink-0"
+              className="flex items-center pl-3 pr-2 py-2.5 sm:pl-5 sm:pr-4 sm:py-3 opacity-75 hover:opacity-100 transition-opacity flex-shrink-0"
               aria-label="Back to top"
             >
-              <div className="relative w-[68px] h-[26px]">
+              <div className="relative w-[56px] h-[22px] sm:w-[68px] sm:h-[26px]">
                 <Image
                   src="/assets/images/logo-white.png"
                   alt="DOUGH & CO."
@@ -84,7 +84,7 @@ export default function FloatingNav() {
                   <button
                     key={id}
                     onClick={() => scrollTo(id)}
-                    className={`relative px-4 py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold outline-none focus-visible:ring-1 focus-visible:ring-accent/50 ${
+                    className={`relative px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold outline-none focus-visible:ring-1 focus-visible:ring-accent/50 ${
                       id === "wholesome" ? "hidden md:block" : ""
                     }`}
                   >
@@ -117,7 +117,7 @@ export default function FloatingNav() {
               onClick={() => scrollTo("order")}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="bg-accent hover:bg-accent/90 text-[#150c05] ml-2 mr-2 px-5 py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold transition-colors shadow-lg shadow-accent/20 flex-shrink-0"
+              className="bg-accent hover:bg-accent/90 text-[#150c05] ml-1.5 mr-1.5 sm:ml-2 sm:mr-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full text-[10px] uppercase tracking-[0.28em] font-bold transition-colors shadow-lg shadow-accent/20 flex-shrink-0"
             >
               Order Now
             </motion.button>

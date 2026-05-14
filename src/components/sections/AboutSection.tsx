@@ -13,13 +13,13 @@ const STATS = [
 
 export default function AboutSection() {
   return (
-    <section id="story" className="py-32 bg-secondary text-background overflow-hidden relative">
+    <section id="story" className="py-20 md:py-32 bg-secondary text-background overflow-hidden relative">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/25 to-transparent" />
       {/* Ambient */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-accent/4 blur-[160px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 xl:gap-28 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 xl:gap-28 items-center">
 
           {/* ── Image ── */}
           <motion.div
@@ -49,7 +49,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               viewport={{ once: true }}
-              className="absolute -bottom-5 -right-5 bg-accent px-5 py-3 rounded-xl shadow-xl"
+              className="absolute -bottom-3 -right-3 sm:-bottom-5 sm:-right-5 bg-accent px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl shadow-xl"
             >
               <p className="text-[8px] uppercase tracking-[0.35em] font-bold text-background/70 mb-0.5">Part of</p>
               <p className="text-sm font-serif text-background leading-tight">Peninsula<br />Hospitality Group</p>
@@ -95,7 +95,7 @@ export default function AboutSection() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-4 gap-4 pt-8 border-t border-background/8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-background/8">
               {STATS.map((stat) => (
                 <div key={stat.label} className="group cursor-default">
                   <p className="text-accent text-[9px] uppercase tracking-[0.3em] font-bold mb-2 group-hover:text-background/70 transition-colors">

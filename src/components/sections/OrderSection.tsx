@@ -14,7 +14,7 @@ const PLATFORMS = [
 
 export default function OrderSection() {
   return (
-    <section id="order" className="py-32 bg-secondary relative overflow-hidden">
+    <section id="order" className="py-20 md:py-32 bg-secondary relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/25 to-transparent" />
       <div className="absolute -bottom-48 -right-48 w-[600px] h-[600px] bg-accent/4 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute -top-32 -left-32 w-80 h-80 bg-background/3 rounded-full blur-[100px] pointer-events-none" />
@@ -22,7 +22,7 @@ export default function OrderSection() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mb-12 sm:mb-20">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -68,7 +68,7 @@ export default function OrderSection() {
               transition={{ delay: idx * 0.07 }}
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
-              className="group relative rounded-[24px] bg-background/4 border border-background/8 hover:border-accent/35 hover:bg-background/8 transition-all duration-400 overflow-hidden flex flex-col justify-between p-7 min-h-[200px]"
+              className="group relative rounded-[24px] bg-background/4 border border-background/8 hover:border-accent/35 hover:bg-background/8 transition-all duration-400 overflow-hidden flex flex-col justify-between p-5 sm:p-7 min-h-[160px] sm:min-h-[200px]"
             >
               {/* Platform color bar at top */}
               <div

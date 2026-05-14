@@ -150,17 +150,17 @@ const BENTO_SPANS = [
 ];
 
 const BENTO_HEIGHTS = [
-  "min-h-[580px]",
-  "min-h-[580px]",
-  "min-h-[380px]",
-  "min-h-[380px]",
-  "min-h-[380px]",
-  "min-h-[460px]",
-  "min-h-[460px]",
-  "min-h-[380px]",
-  "min-h-[380px]",
-  "min-h-[380px]",
-  "min-h-[300px]",
+  "min-h-[420px] sm:min-h-[580px]",
+  "min-h-[380px] sm:min-h-[580px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[380px] sm:min-h-[460px]",
+  "min-h-[380px] sm:min-h-[460px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[320px] sm:min-h-[380px]",
+  "min-h-[320px] sm:min-h-[300px]",
 ];
 
 const CATEGORIES: { label: Category; count: number }[] = [
@@ -179,12 +179,12 @@ const ProductGrid = () => {
       : PRODUCTS.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="bakery" className="py-24 bg-[#F9F6F2] relative overflow-hidden">
+    <section id="bakery" className="py-16 md:py-24 bg-[#F9F6F2] relative overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
         {/* ── Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-6 sm:gap-10">
           <div className="max-w-2xl">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -309,7 +309,7 @@ const ProductGrid = () => {
                   <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent" />
 
                   {/* ── Card Content ── */}
-                  <div className={`absolute inset-0 flex ${isLandscape ? "flex-row items-center" : "flex-col justify-between"} p-7 md:p-8`}>
+                  <div className={`absolute inset-0 flex ${isLandscape ? "flex-col justify-end sm:flex-row sm:items-center" : "flex-col justify-between"} p-5 sm:p-7 md:p-8`}>
 
                     {/* Top row — badges */}
                     <div className={`flex justify-between items-start ${isLandscape ? "hidden" : ""}`}>
@@ -334,7 +334,7 @@ const ProductGrid = () => {
 
                     {/* Landscape (full-width card) layout */}
                     {isLandscape && (
-                      <div className="flex items-center justify-between w-full gap-10">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-5 sm:gap-10">
                         <div>
                           <p className="text-accent text-[9px] uppercase tracking-[0.4em] font-bold mb-2">
                             {product.range} Range

@@ -58,7 +58,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen w-full overflow-hidden bg-background pt-16 pb-28"
+      className="relative min-h-screen w-full overflow-hidden bg-background pt-16 pb-20 sm:pb-28"
     >
       {/* ── Background video ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -78,10 +78,10 @@ export default function Hero() {
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-12 lg:col-span-8 min-h-[500px] p-10 lg:p-16 flex flex-col justify-end bg-secondary/4 rounded-[40px] border border-accent/8 backdrop-blur-sm relative overflow-hidden group"
+            className="col-span-12 lg:col-span-8 min-h-[420px] sm:min-h-[500px] p-6 sm:p-10 lg:p-16 flex flex-col justify-end bg-secondary/4 rounded-[40px] border border-accent/8 backdrop-blur-sm relative overflow-hidden group"
           >
             {/* Top badge */}
-            <div className="absolute top-10 left-10 flex items-center gap-3">
+            <div className="absolute top-6 sm:top-10 left-6 sm:left-10 flex items-center gap-3">
               <span className="w-8 h-px bg-accent/40" />
               <span className="text-[9px] uppercase tracking-[0.45em] font-bold text-accent">
                 Cloud Kitchen · Dubai, UAE
@@ -210,7 +210,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + idx * 0.08, duration: 0.5 }}
-              className={`col-span-6 md:col-span-3 min-h-[180px] p-7 ${item.bg} rounded-[28px] border border-accent/6 flex flex-col justify-between hover:shadow-lg hover:border-accent/15 transition-all group cursor-default`}
+              className={`col-span-6 md:col-span-3 min-h-[140px] sm:min-h-[180px] p-5 sm:p-7 ${item.bg} rounded-[28px] border border-accent/6 flex flex-col justify-between hover:shadow-lg hover:border-accent/15 transition-all group cursor-default`}
             >
               <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-accent shadow-sm group-hover:scale-110 transition-transform">
                 <item.icon className="w-5 h-5 stroke-[1.5]" />
@@ -232,7 +232,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.8 }}
-        className="absolute bottom-10 right-10 flex items-center gap-4 rotate-90 origin-right translate-x-10 pointer-events-none"
+        className="absolute bottom-10 right-10 hidden sm:flex items-center gap-4 rotate-90 origin-right translate-x-10 pointer-events-none"
       >
         <span className="text-[8px] uppercase tracking-[0.5em] text-accent/40 font-bold">Scroll</span>
         <div className="w-16 h-px bg-accent/20" />

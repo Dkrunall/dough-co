@@ -21,7 +21,7 @@ export default function Home() {
       <OrderSection />
 
       {/* ── Newsletter ── */}
-      <section className="relative overflow-hidden bg-[#2A1A0F] py-32">
+      <section className="relative overflow-hidden bg-[#2A1A0F] py-20 md:py-32">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(184,142,91,0.12),transparent)] pointer-events-none" />
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/25 to-transparent" />
 

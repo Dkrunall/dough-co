@@ -14,14 +14,14 @@ const FEATURES = [
 
 export default function WholesomeSection() {
   return (
-    <section id="wholesome" className="py-32 bg-background relative overflow-hidden">
+    <section id="wholesome" className="py-20 md:py-32 bg-background relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/15 to-transparent" />
 
       {/* Ambient glow */}
       <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 xl:gap-32 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-32 items-start">
 
           {/* ── Left: copy + feature list ── */}
           <motion.div
