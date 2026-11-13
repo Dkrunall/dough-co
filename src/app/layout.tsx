@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Outfit } from "next/font/google";
+import { Gilda_Display, Jost } from "next/font/google";
+import SiteHeader from "@/components/layout/SiteHeader";
+import SiteFooter from "@/components/layout/SiteFooter";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-serif",
+const display = Gilda_Display({
+  variable: "--font-display",
   weight: "400",
   subsets: ["latin"],
 });
 
-const outfit = Outfit({
-  variable: "--font-sans",
+const body = Jost({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "DOUGH & CO. | Artisanal Cloud Kitchen",
-  description: "Premium artisanal cloud kitchen bakery bringing the finest patisserie directly to your door in Dubai.",
+  title: {
+    default: "Dough & Co. | Artisanal Bakes in Dubai",
+    template: "%s | Dough & Co.",
+  },
+  description:
+    "Thoughtfully crafted cookies, bakes and gift boxes, baked fresh in small batches and delivered same day across Dubai.",
 };
 
 export default function RootLayout({
@@ -24,12 +30,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${instrumentSerif.variable} ${outfit.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col selection:bg-accent/30 selection:text-foreground">
-        {children}
+    <html lang="en" className={`${display.variable} ${body.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col selection:bg-accent/30">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
