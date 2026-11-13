@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="bg-surface">
-      <div className="mx-auto max-w-[1240px] px-5 pb-20 pt-6 md:px-14">
+      <div className="page-container pb-20 pt-6">
         <nav className="mb-6 flex flex-wrap items-center gap-2 text-xs text-foreground/70">
           <Link href="/" className="hover:text-accent">Home</Link>
           <ChevronRight className="size-3" />

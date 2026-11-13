@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import ArchCard from "@/components/ui/ArchCard";
 import { ArrowLink, ButtonLink } from "@/components/ui/Links";
 
 const COLLECTION = [
@@ -26,7 +26,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-sand via-sand/80 to-sand/20 md:bg-gradient-to-r md:from-sand md:to-transparent md:via-transparent md:via-35%" />
         </div>
 
-        <div className="relative mx-auto flex min-h-[640px] max-w-[1440px] flex-col justify-center px-5 py-20 md:min-h-[760px] md:px-24">
+        <div className="relative page-container flex min-h-[640px] flex-col justify-center py-20 md:min-h-[760px]">
           <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.3em] text-foreground/75">
             Artisanal Bakes
           </p>
@@ -49,7 +49,7 @@ export default function Home() {
       </section>
 
       {/* ── Our Collection ── */}
-      <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-14 md:py-24">
+      <section className="page-container py-20 md:py-24">
         <div className="mb-12 flex items-center justify-between gap-6">
           <div className="flex items-center gap-6">
             <h2 className="text-2xl uppercase tracking-[0.2em] md:text-[28px]">Our Collection</h2>
@@ -60,21 +60,11 @@ export default function Home() {
 
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4 md:gap-x-8">
           {COLLECTION.map((item) => (
-            <article key={item.label} className="group">
-              <Link href={item.href} className="relative block aspect-[3/4] overflow-hidden rounded-t-full bg-sand">
-                <Image
-                  src={item.image}
-                  alt={item.label}
-                  fill
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </Link>
-              <h3 className="mt-6 text-[15px] uppercase tracking-[0.2em] md:text-lg">{item.label}</h3>
+            <ArchCard key={item.label} href={item.href} image={item.image} title={item.label}>
               <ArrowLink href={item.href} className="mt-4">
                 Shop
               </ArrowLink>
-            </article>
+            </ArchCard>
           ))}
         </div>
       </section>
@@ -92,7 +82,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-sand via-sand/80 to-sand/20 md:bg-gradient-to-r md:from-sand md:to-transparent md:via-transparent" />
         </div>
 
-        <div className="relative mx-auto flex min-h-[440px] max-w-[1440px] flex-col justify-center px-5 py-16 md:px-24">
+        <div className="relative page-container flex min-h-[440px] flex-col justify-center py-16">
           <h2 className="max-w-[12ch] text-[clamp(36px,4vw,54px)] uppercase leading-[1.08] tracking-[0.06em]">
             Beautifully Boxed Indulgence.
           </h2>

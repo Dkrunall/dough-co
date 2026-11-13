@@ -20,7 +20,7 @@ export default async function ShopPage({
 
   return (
     <div className="bg-surface">
-      <div className="mx-auto max-w-[1240px] px-5 py-14 md:px-14 md:py-20">
+      <div className="page-container py-14 md:py-20">
         <h1 className="text-[clamp(44px,5.5vw,76px)] leading-none">Cookies &amp; Bakes</h1>
 
         <nav className="mt-12 flex flex-wrap items-start gap-x-10 gap-y-4 md:gap-x-16">
@@ -68,7 +68,7 @@ export default async function ShopPage({
         </nav>
 
         {products.length > 0 ? (
-          <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-10">
+          <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4 md:gap-x-8">
             {products.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}

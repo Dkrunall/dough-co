@@ -26,6 +26,21 @@
   --font-sans: var(--font-body);
 }
 
+/* One width standard for every page: header, sections, footer. */
+@layer components {
+  .page-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1320px;
+    padding-inline: 1.25rem;
+  }
+  @media (width >= 48rem) {
+    .page-container {
+      padding-inline: 3.5rem;
+    }
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

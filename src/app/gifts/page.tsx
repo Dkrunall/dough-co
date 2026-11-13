@@ -28,7 +28,7 @@ export default function GiftsPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-sand via-sand/80 to-sand/20 md:bg-gradient-to-r md:from-sand md:to-transparent md:via-transparent md:via-30%" />
         </div>
 
-        <div className="relative mx-auto flex min-h-[520px] max-w-[1440px] flex-col justify-center px-5 py-16 md:min-h-[600px] md:px-24">
+        <div className="relative page-container flex min-h-[520px] flex-col justify-center py-16 md:min-h-[600px]">
           <h1 className="text-[clamp(56px,6.5vw,96px)] leading-none">Gifting</h1>
           <p className="mt-6 max-w-[15rem] text-lg leading-relaxed text-foreground/80">
             Thoughtful boxes for sweet occasions.
@@ -40,7 +40,7 @@ export default function GiftsPage() {
       </section>
 
       <section id="boxes" className="bg-surface">
-        <div className="mx-auto grid max-w-[1440px] gap-6 px-5 py-14 md:grid-cols-3 md:gap-8 md:px-14 md:py-20">
+        <div className="page-container grid gap-6 py-14 md:grid-cols-3 md:gap-8 md:py-20">
           {BOXES.map((box) => (
             <Link key={box.name} href="/shop" className="group block bg-sand/60">
               <div className="relative aspect-[4/3] overflow-hidden">

@@ -23,8 +23,8 @@ export default function OurStoryPage() {
   return (
     <>
       <section className="bg-background">
-        <div className="mx-auto grid max-w-[1440px] md:min-h-[calc(100vh-6rem)] md:grid-cols-[1fr_1.15fr]">
-          <div className="flex flex-col justify-center px-5 py-16 md:px-24">
+        <div className="page-container grid md:min-h-[calc(100vh-6rem)] md:grid-cols-[1fr_1.15fr]">
+          <div className="flex flex-col justify-center py-16 md:pr-16">
             <p className="mb-6 text-[11px] font-medium uppercase tracking-[0.3em] text-foreground/75">Our Story</p>
             <h1 className="max-w-[9ch] text-[clamp(48px,5.5vw,84px)] leading-[1.02]">
               A Love for Baking. A Brighter Everyday.
@@ -51,7 +51,7 @@ export default function OurStoryPage() {
       </section>
 
       <section id="values" className="bg-surface">
-        <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-20 md:grid-cols-3 md:px-24 md:py-28">
+        <div className="page-container grid gap-12 py-20 md:grid-cols-3 md:py-28">
           {VALUES.map((v) => (
             <div key={v.title}>
               <h2 className="text-2xl uppercase tracking-[0.12em]">{v.title}</h2>

@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function SiteFooter() {
   return (
     <footer className="border-t border-line bg-surface">
-      <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-6 px-5 py-12 text-center md:flex-row md:justify-between md:px-10 md:text-left">
+      <div className="page-container flex flex-col items-center gap-6 py-12 text-center md:flex-row md:justify-between md:text-left">
         <Image
           src="/assets/images/logo-brown.png"
           alt="Dough & Co."

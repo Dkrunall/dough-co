@@ -11,7 +11,7 @@ const NAV = [
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/60 bg-background/95 backdrop-blur">
-      <div className="mx-auto grid h-20 max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center px-4 md:h-24 md:px-10">
+      <div className="page-container grid h-20 grid-cols-[1fr_auto_1fr] items-center md:h-24">
         <nav className="flex items-center gap-4 text-[10px] font-medium uppercase tracking-[0.18em] md:gap-12 md:text-[11px]">
           {NAV.map((item) => (
             <Link key={item.href} href={item.href} className="whitespace-nowrap transition-colors hover:text-accent">
