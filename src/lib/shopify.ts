@@ -11,6 +11,9 @@ const apiVersion = process.env.SHOPIFY_API_VERSION ?? "2026-07";
 
 export const isShopifyConfigured = Boolean(domain && token);
 
+/** Country carts are created for, so checkout offers delivery there (the bakery only delivers in the UAE). */
+export const shopCountry = process.env.SHOPIFY_COUNTRY ?? "AE";
+
 type Money = { amount: string; currencyCode: string };
 type ShopifyImage = { url: string; altText: string | null };
 
@@ -100,6 +103,7 @@ const CART_FIELDS = /* GraphQL */ `
     id
     checkoutUrl
     totalQuantity
+    buyerIdentity { countryCode }
     cost { subtotalAmount { amount currencyCode } }
     lines(first: 100) {
       nodes {
@@ -123,6 +127,7 @@ type ShopifyCart = {
   id: string;
   checkoutUrl: string;
   totalQuantity: number;
+  buyerIdentity: { countryCode: string | null };
   cost: { subtotalAmount: Money };
   lines: {
     nodes: {
@@ -143,6 +148,8 @@ export type Cart = {
   id: string;
   checkoutUrl: string;
   totalQuantity: number;
+  /** Delivery country checkout opens with. */
+  country: string | null;
   subtotal: Money;
   lines: {
     id: string;
@@ -160,6 +167,7 @@ function toCart(cart: ShopifyCart): Cart {
     id: cart.id,
     checkoutUrl: cart.checkoutUrl,
     totalQuantity: cart.totalQuantity,
+    country: cart.buyerIdentity.countryCode,
     subtotal: cart.cost.subtotalAmount,
     lines: cart.lines.nodes.map((line) => ({
       id: line.id,
@@ -194,13 +202,32 @@ export async function getCart(cartId: string) {
 export async function createCart(lines: { merchandiseId: string; quantity: number }[]) {
   const data = await shopifyFetch<{ cartCreate: { cart: ShopifyCart | null } & UserErrors }>(
     `${CART_FIELDS}
-    mutation CartCreate($lines: [CartLineInput!]) {
-      cartCreate(input: { lines: $lines }) { cart { ...CartFields } userErrors { message } }
+    mutation CartCreate($lines: [CartLineInput!], $country: CountryCode!) {
+      cartCreate(input: { lines: $lines, buyerIdentity: { countryCode: $country } }) {
+        cart { ...CartFields }
+        userErrors { message }
+      }
     }`,
-    { lines },
+    { lines, country: shopCountry },
     { cache: false },
   );
   return unwrap(data.cartCreate);
+}
+
+/** Moves an existing cart (e.g. one made before the market changed) to the shop's country. */
+export async function setCartCountry(cartId: string) {
+  const data = await shopifyFetch<{ cartBuyerIdentityUpdate: { cart: ShopifyCart | null } & UserErrors }>(
+    `${CART_FIELDS}
+    mutation CartBuyerIdentityUpdate($cartId: ID!, $country: CountryCode!) {
+      cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: { countryCode: $country }) {
+        cart { ...CartFields }
+        userErrors { message }
+      }
+    }`,
+    { cartId, country: shopCountry },
+    { cache: false },
+  );
+  return unwrap(data.cartBuyerIdentityUpdate);
 }
 
 export async function addCartLines(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {

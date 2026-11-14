@@ -1,7 +1,16 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { addCartLines, createCart, getCart, updateCartLines, isShopifyConfigured, type Cart } from "@/lib/shopify";
+import {
+  addCartLines,
+  createCart,
+  getCart,
+  isShopifyConfigured,
+  setCartCountry,
+  shopCountry,
+  updateCartLines,
+  type Cart,
+} from "@/lib/shopify";
 
 // The Shopify cart id lives in an httpOnly cookie; the cart itself lives in Shopify.
 const CART_COOKIE = "dc_cart";
@@ -27,7 +36,11 @@ export async function addToCart(variantId: string, quantity: number): Promise<Ca
   const lines = [{ merchandiseId: variantId, quantity }];
   const id = await cartId();
   // Carts expire in Shopify; start a fresh one if the stored id is gone.
-  if (id && (await getCart(id))) return addCartLines(id, lines);
+  const existing = id ? await getCart(id) : null;
+  if (id && existing) {
+    if (existing.country !== shopCountry) await setCartCountry(id);
+    return addCartLines(id, lines);
+  }
 
   const cart = await createCart(lines);
   (await cookies()).set(CART_COOKIE, cart.id, {
