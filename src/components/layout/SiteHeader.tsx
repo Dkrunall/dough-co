@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, User } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
+import { isCustomerAccountConfigured } from "@/lib/customer-account";
 import { accountUrl } from "@/lib/shopify";
 
 const NAV = [
@@ -37,10 +38,16 @@ export default function SiteHeader() {
           <Link href="/search" aria-label="Search" className="transition-colors hover:text-accent">
             <Search className="size-[18px] md:size-5" strokeWidth={1.4} />
           </Link>
-          {accountUrl && (
-            <a href={accountUrl} aria-label="My account" className="transition-colors hover:text-accent">
+          {isCustomerAccountConfigured ? (
+            <Link href="/account" aria-label="My account" className="transition-colors hover:text-accent">
               <User className="size-[18px] md:size-5" strokeWidth={1.4} />
-            </a>
+            </Link>
+          ) : (
+            accountUrl && (
+              <a href={accountUrl} aria-label="My account" className="transition-colors hover:text-accent">
+                <User className="size-[18px] md:size-5" strokeWidth={1.4} />
+              </a>
+            )
           )}
           <CartButton />
         </div>
