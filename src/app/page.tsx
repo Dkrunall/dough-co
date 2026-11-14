@@ -4,8 +4,8 @@ import { ArrowLink, ButtonLink } from "@/components/ui/Links";
 
 const COLLECTION = [
   { label: "Cookies & Bakes", href: "/shop?category=cookies", image: "/assets/mock/col-cookies.jpg" },
-  { label: "Pastries", href: "/shop?category=pastries", image: "/assets/mock/col-pastries.jpg" },
-  { label: "Cakes & Desserts", href: "/shop?category=cakes", image: "/assets/mock/col-cakes.jpg" },
+  { label: "Pastries", href: "/shop?category=viennoiserie", image: "/assets/mock/col-pastries.jpg" },
+  { label: "Cakes & Desserts", href: "/shop?category=pastries", image: "/assets/mock/col-cakes.jpg" },
   { label: "Gifts & Hampers", href: "/gifts", image: "/assets/mock/col-gifts.jpg" },
 ];
 

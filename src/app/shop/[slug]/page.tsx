@@ -5,16 +5,17 @@ import { notFound } from "next/navigation";
 import { ArrowRight, BadgeCheck, ChevronRight, CookingPot, Plus, Star, Truck } from "lucide-react";
 import AddToCart from "@/components/shop/AddToCart";
 import ProductGallery from "@/components/shop/ProductGallery";
-import { formatPrice, getProduct, PRODUCTS } from "@/lib/products";
+import { getProduct, getProducts } from "@/lib/catalog";
+import { formatPrice } from "@/lib/products";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = getProduct((await params).slug);
+  const product = await getProduct((await params).slug);
   return { title: product?.name };
 }
 
@@ -40,7 +41,7 @@ const DETAILS = [
 ];
 
 export default async function ProductPage({ params }: Props) {
-  const product = getProduct((await params).slug);
+  const product = await getProduct((await params).slug);
   if (!product) notFound();
 
   return (
@@ -86,21 +87,23 @@ export default async function ProductPage({ params }: Props) {
           {/* Right column: details */}
           <div className="md:pt-4">
             <h1 className="max-w-[12ch] text-[clamp(38px,4.2vw,58px)] leading-[1.08]">{product.name}</h1>
-            <p className="mt-6 text-lg tracking-[0.1em]">{formatPrice(product.price)}</p>
+            <p className="mt-6 text-lg tracking-[0.1em]">{formatPrice(product.price, product.currency)}</p>
 
-            <div className="mt-4 flex items-center gap-3">
-              <div className="flex gap-0.5 text-star">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <Star key={i} className="size-3.5" fill={i < product.rating ? "currentColor" : "none"} strokeWidth={1.2} />
-                ))}
+            {product.rating !== undefined && (
+              <div className="mt-4 flex items-center gap-3">
+                <div className="flex gap-0.5 text-star">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star key={i} className="size-3.5" fill={i < product.rating! ? "currentColor" : "none"} strokeWidth={1.2} />
+                  ))}
+                </div>
+                <span className="text-xs text-foreground/60">({product.reviews} reviews)</span>
               </div>
-              <span className="text-xs text-foreground/60">({product.reviews} reviews)</span>
-            </div>
+            )}
 
             <p className="mt-6 max-w-md text-[15px] leading-relaxed text-foreground/80">{product.description}</p>
 
             <div className="mt-8 max-w-md">
-              <AddToCart />
+              <AddToCart variantId={product.variantId} available={product.available} />
             </div>
 
             <ul className="mt-10 grid max-w-md grid-cols-3 gap-4 text-center">

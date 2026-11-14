@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Search, ShoppingBag, User } from "lucide-react";
+import { Search, User } from "lucide-react";
+import CartButton from "@/components/cart/CartButton";
 
 const NAV = [
   { href: "/shop", label: "Shop" },
@@ -32,15 +33,13 @@ export default function SiteHeader() {
         </Link>
 
         <div className="flex items-center justify-end gap-3 md:gap-7">
-          <button aria-label="Search" className="whitespace-nowrap transition-colors hover:text-accent">
+          <button aria-label="Search" className="transition-colors hover:text-accent">
             <Search className="size-[18px] md:size-5" strokeWidth={1.4} />
           </button>
-          <button aria-label="Account" className="whitespace-nowrap transition-colors hover:text-accent">
+          <button aria-label="Account" className="transition-colors hover:text-accent">
             <User className="size-[18px] md:size-5" strokeWidth={1.4} />
           </button>
-          <button aria-label="Cart" className="whitespace-nowrap transition-colors hover:text-accent">
-            <ShoppingBag className="size-[18px] md:size-5" strokeWidth={1.4} />
-          </button>
+          <CartButton />
         </div>
       </div>
     </header>

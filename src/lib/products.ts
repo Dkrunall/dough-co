@@ -1,33 +1,49 @@
-export type Category = "cookies" | "brownies" | "tea-cakes" | "madeleines" | "pastries" | "cakes";
+/** Menu sections; each slug is a Shopify collection handle. */
+export type Category =
+  | "viennoiserie"
+  | "cookies"
+  | "cruffins"
+  | "croffles"
+  | "pastries"
+  | "tarts"
+  | "tea-cakes"
+  | "croissant-sandwiches";
 
 export const CATEGORIES: { slug: Category; label: string }[] = [
+  { slug: "viennoiserie", label: "Viennoiserie" },
   { slug: "cookies", label: "Cookies" },
-  { slug: "brownies", label: "Brownies" },
-  { slug: "tea-cakes", label: "Tea Cakes" },
-  { slug: "madeleines", label: "Madeleines" },
+  { slug: "cruffins", label: "Cruffins" },
+  { slug: "croffles", label: "Croffles" },
+  { slug: "pastries", label: "Pastries" },
 ];
 
 /** Categories tucked under the "More" menu on the shop page. */
 export const MORE_CATEGORIES: { slug: Category; label: string }[] = [
-  { slug: "pastries", label: "Pastries" },
-  { slug: "cakes", label: "Cakes & Desserts" },
+  { slug: "croissant-sandwiches", label: "Croissant Sandwiches" },
+  { slug: "tea-cakes", label: "Tea Cakes" },
+  { slug: "tarts", label: "Tarts" },
 ];
 
 export type Product = {
   slug: string;
   name: string;
   price: number;
-  category: Category;
+  currency: string;
+  /** Shopify variant added to the cart; absent for local placeholder products. */
+  variantId?: string;
+  available: boolean;
+  category?: Category;
   image: string;
   gallery: string[];
   description: string;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
 };
 
 const IMG = "/assets/mock";
 
-export const PRODUCTS: Product[] = [
+/** Placeholder catalog shown until Shopify is connected (see .env.example). */
+const LOCAL_PRODUCTS: Omit<Product, "currency" | "available">[] = [
   {
     slug: "signature-chocolate-chunk-cookie",
     name: "Signature Chocolate Chunk Cookie",
@@ -68,7 +84,7 @@ export const PRODUCTS: Product[] = [
     slug: "salted-caramel-brownie",
     name: "Salted Caramel Brownie",
     price: 26,
-    category: "brownies",
+    category: "pastries",
     image: `${IMG}/p-brownie.jpg`,
     gallery: [`${IMG}/p-brownie.jpg`],
     description:
@@ -102,10 +118,10 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export function getProduct(slug: string) {
-  return PRODUCTS.find((p) => p.slug === slug);
-}
+export const PRODUCTS: Product[] = LOCAL_PRODUCTS.map((p) => ({ ...p, currency: "AED", available: true }));
 
-export function formatPrice(price: number) {
-  return `AED ${price}`;
+/** "AED 24", or "AED 24.50" when there are fils. */
+export function formatPrice(price: number | string, currency = "AED") {
+  const n = Number(price);
+  return `${currency} ${Number.isInteger(n) ? n : n.toFixed(2)}`;
 }

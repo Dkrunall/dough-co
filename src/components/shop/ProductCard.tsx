@@ -8,7 +8,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <ArchCard href={href} image={product.image} title={product.name}>
       <div className="mt-4 flex items-center justify-between gap-4">
-        <span className="text-xs tracking-[0.15em] text-foreground/75">{formatPrice(product.price)}</span>
+        <span className="text-xs tracking-[0.15em] text-foreground/75">{formatPrice(product.price, product.currency)}</span>
         <ArrowLink href={href}>Shop</ArrowLink>
       </div>
     </ArchCard>

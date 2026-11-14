@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import ProductCard from "@/components/shop/ProductCard";
-import { CATEGORIES, MORE_CATEGORIES, PRODUCTS } from "@/lib/products";
+import { getProducts } from "@/lib/catalog";
+import { CATEGORIES, MORE_CATEGORIES } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Cookies & Bakes" };
@@ -15,7 +16,7 @@ export default async function ShopPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
-  const products = category ? PRODUCTS.filter((p) => p.category === category) : PRODUCTS;
+  const products = await getProducts(category);
   const moreActive = MORE_CATEGORIES.find((c) => c.slug === category);
 
   return (

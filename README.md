@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dough & Co.
 
-## Getting Started
+Next.js storefront for Dough & Co. The site is self-hosted; **products, cart, checkout and billing come from Shopify** through the Storefront API (headless). Customers browse here, then pay on Shopify's secure checkout.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Without Shopify credentials the site shows the local placeholder products from `src/lib/products.ts` and ordering is disabled.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Connect Shopify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Get a Storefront API token.** In Shopify admin, install the free **Headless** sales channel (by Shopify), create a storefront, open *Storefront API* and copy the **public access token**.
+2. **Publish products** to the Headless channel (each product → *Sales channels*), or they won't appear on the site.
+3. **Create collections** with these handles so the shop tabs work: `viennoiserie`, `cookies`, `cruffins`, `croffles`, `pastries`, `croissant-sandwiches`, `tea-cakes`, `tarts`.
+4. **Set up selling in Shopify:** store currency (AED), Dubai shipping/local delivery, payments and taxes. Checkout uses these settings as-is.
+5. **Add credentials** to `.env.local` (copy `.env.example`):
 
-## Learn More
+   ```
+   SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
+   SHOPIFY_STOREFRONT_ACCESS_TOKEN=<public token>
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+6. Restart the server. Product changes in Shopify show up on the site within about a minute.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### How the pieces fit
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Where | What |
+|---|---|
+| `src/lib/shopify.ts` | Storefront API client: products, collections, cart mutations |
+| `src/lib/catalog.ts` | Picks Shopify or the local placeholder catalog |
+| `src/app/actions/cart.ts` | Server actions; the cart id is kept in an httpOnly cookie |
+| `src/components/cart/` | Cart context, header button and slide-out drawer |
 
-## Deploy on Vercel
+The **Checkout** button sends customers to the cart's Shopify `checkoutUrl`. Payment, billing, order emails and order management all happen in Shopify.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Domains:** keep your main domain pointed at this Next.js server. Checkout opens on your `*.myshopify.com` domain, or on a subdomain such as `shop.yourdomain.com` if you connect one in Shopify.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy (custom hosting)
+
+Needs Node.js 20.9 or newer.
+
+```bash
+npm ci
+npm run build
+npm start          # serves on port 3000; put it behind your reverse proxy
+```
+
+Set the `SHOPIFY_*` variables in the server environment (or `.env.local` on the server) before `npm run build`.
