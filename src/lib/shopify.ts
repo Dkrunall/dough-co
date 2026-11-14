@@ -14,6 +14,9 @@ export const isShopifyConfigured = Boolean(domain && token);
 /** Country carts are created for, so checkout offers delivery there (the bakery only delivers in the UAE). */
 export const shopCountry = process.env.SHOPIFY_COUNTRY ?? "AE";
 
+/** Shopify-hosted customer account (sign in, orders, addresses). */
+export const accountUrl = domain ? `https://${domain}/account` : null;
+
 type Money = { amount: string; currencyCode: string };
 type ShopifyImage = { url: string; altText: string | null };
 
@@ -83,6 +86,16 @@ export async function fetchProducts(collectionHandle?: string) {
   const data = await shopifyFetch<{ products: { nodes: ShopifyProduct[] } }>(
     `${PRODUCT_FIELDS}
     query Products { products(first: 100, sortKey: BEST_SELLING) { nodes { ...ProductFields } } }`,
+  );
+  return data.products.nodes;
+}
+
+/** Shopify's product search (matches title, type, tags, description). */
+export async function searchShopifyProducts(query: string) {
+  const data = await shopifyFetch<{ products: { nodes: ShopifyProduct[] } }>(
+    `${PRODUCT_FIELDS}
+    query Search($query: String!) { products(first: 50, query: $query) { nodes { ...ProductFields } } }`,
+    { query },
   );
   return data.products.nodes;
 }

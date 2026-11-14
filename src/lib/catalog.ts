@@ -1,6 +1,12 @@
 import "server-only";
 import { PLACEHOLDER_IMAGE, PRODUCTS, type Product } from "@/lib/products";
-import { fetchProduct, fetchProducts, isShopifyConfigured, type ShopifyProduct } from "@/lib/shopify";
+import {
+  fetchProduct,
+  fetchProducts,
+  isShopifyConfigured,
+  searchShopifyProducts,
+  type ShopifyProduct,
+} from "@/lib/shopify";
 
 /**
  * Product source for every page: Shopify once SHOPIFY_* env vars are set,
@@ -36,6 +42,16 @@ export async function getProducts(category?: string): Promise<Product[]> {
     return category ? PRODUCTS.filter((p) => p.category === category) : PRODUCTS;
   }
   return (await fetchProducts(category)).map(fromShopify);
+}
+
+export async function searchProducts(query: string): Promise<Product[]> {
+  const q = query.trim();
+  if (!q) return [];
+  if (!isShopifyConfigured) {
+    const needle = q.toLowerCase();
+    return PRODUCTS.filter((p) => `${p.name} ${p.category ?? ""}`.toLowerCase().includes(needle));
+  }
+  return (await searchShopifyProducts(q)).map(fromShopify);
 }
 
 export async function getProduct(slug: string): Promise<Product | undefined> {

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, User } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
+import { accountUrl } from "@/lib/shopify";
 
 const NAV = [
   { href: "/shop", label: "Shop" },
@@ -33,12 +34,14 @@ export default function SiteHeader() {
         </Link>
 
         <div className="flex items-center justify-end gap-3 md:gap-7">
-          <button aria-label="Search" className="transition-colors hover:text-accent">
+          <Link href="/search" aria-label="Search" className="transition-colors hover:text-accent">
             <Search className="size-[18px] md:size-5" strokeWidth={1.4} />
-          </button>
-          <button aria-label="Account" className="transition-colors hover:text-accent">
-            <User className="size-[18px] md:size-5" strokeWidth={1.4} />
-          </button>
+          </Link>
+          {accountUrl && (
+            <a href={accountUrl} aria-label="My account" className="transition-colors hover:text-accent">
+              <User className="size-[18px] md:size-5" strokeWidth={1.4} />
+            </a>
+          )}
           <CartButton />
         </div>
       </div>
