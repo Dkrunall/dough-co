@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PLACEHOLDER_IMAGE } from "@/lib/products";
+import { cn } from "@/lib/utils";
 
 type Props = {
   href: string;
@@ -19,7 +21,10 @@ export default function ArchCard({ href, image, title, children }: Props) {
           alt={title}
           fill
           sizes="(min-width: 768px) 25vw, 50vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className={cn(
+            "transition-transform duration-700 group-hover:scale-105",
+            image === PLACEHOLDER_IMAGE ? "object-contain p-[22%] opacity-40" : "object-cover",
+          )}
         />
       </Link>
       <h3 className="mt-6 text-[15px] uppercase leading-snug tracking-[0.2em] md:text-lg">

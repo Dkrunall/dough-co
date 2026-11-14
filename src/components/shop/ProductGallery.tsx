@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { PLACEHOLDER_IMAGE } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
 export default function ProductGallery({ images, alt }: { images: string[]; alt: string }) {
@@ -33,7 +34,7 @@ export default function ProductGallery({ images, alt }: { images: string[]; alt:
           fill
           priority
           sizes="(min-width: 768px) 35vw, 80vw"
-          className="object-cover"
+          className={images[active] === PLACEHOLDER_IMAGE ? "object-contain p-[22%] opacity-40" : "object-cover"}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import "server-only";
-import { PRODUCTS, type Product } from "@/lib/products";
+import { PLACEHOLDER_IMAGE, PRODUCTS, type Product } from "@/lib/products";
 import { fetchProduct, fetchProducts, isShopifyConfigured, type ShopifyProduct } from "@/lib/shopify";
 
 /**
@@ -9,19 +9,22 @@ import { fetchProduct, fetchProducts, isShopifyConfigured, type ShopifyProduct }
  * With Shopify, shop categories are collection handles (see CATEGORIES in products.ts).
  */
 
-const PLACEHOLDER_IMAGE = "/assets/images/logo-brown.png";
-
 function fromShopify(p: ShopifyProduct): Product {
   const images = p.images.nodes.map((img) => img.url);
   const image = p.featuredImage?.url ?? images[0] ?? PLACEHOLDER_IMAGE;
-  const variant = p.variants.nodes[0];
+  const variants = p.variants.nodes.map((v) => ({
+    id: v.id,
+    title: v.title,
+    price: Number(v.price.amount),
+    available: v.availableForSale,
+  }));
   return {
     slug: p.handle,
     name: p.title,
     price: Number(p.priceRange.minVariantPrice.amount),
     currency: p.priceRange.minVariantPrice.currencyCode,
-    variantId: variant?.id,
-    available: p.availableForSale && Boolean(variant?.availableForSale),
+    variants,
+    available: p.availableForSale && variants.some((v) => v.available),
     image,
     gallery: images.length ? images : [image],
     description: p.description,

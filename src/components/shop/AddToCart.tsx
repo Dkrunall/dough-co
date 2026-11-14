@@ -3,24 +3,61 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/cart/CartProvider";
+import { formatPrice, type Variant } from "@/lib/products";
+import { cn } from "@/lib/utils";
 
-export default function AddToCart({ variantId, available }: { variantId?: string; available: boolean }) {
+type Props = { variants: Variant[]; currency: string; available: boolean };
+
+export default function AddToCart({ variants, currency, available }: Props) {
   const { enabled, add, error } = useCart();
+  const [selectedId, setSelectedId] = useState(() => (variants.find((v) => v.available) ?? variants[0])?.id);
   const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
 
-  const canBuy = enabled && Boolean(variantId) && available;
-  const label = !enabled || !variantId ? "Ordering Opens Soon" : !available ? "Sold Out" : adding ? "Adding…" : "Add to Cart";
+  const selected = variants.find((v) => v.id === selectedId);
+  const canBuy = enabled && available && Boolean(selected?.available);
+  const label = !enabled || !selected
+    ? "Ordering Opens Soon"
+    : !canBuy
+      ? "Sold Out"
+      : adding
+        ? "Adding…"
+        : `Add to Cart · ${formatPrice(selected.price * qty, currency)}`;
 
   async function onAdd() {
-    if (!variantId) return;
+    if (!selected) return;
     setAdding(true);
-    if (await add(variantId, qty)) setQty(1);
+    if (await add(selected.id, qty)) setQty(1);
     setAdding(false);
   }
 
   return (
     <div>
+      {variants.length > 1 && (
+        <fieldset className="mb-6">
+          <legend className="mb-3 text-[11px] font-medium uppercase tracking-[0.18em]">Size</legend>
+          <div className="flex flex-wrap gap-2">
+            {variants.map((v) => (
+              <button
+                key={v.id}
+                type="button"
+                disabled={!v.available}
+                aria-pressed={v.id === selectedId}
+                onClick={() => setSelectedId(v.id)}
+                className={cn(
+                  "border px-4 py-2.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40",
+                  v.id === selectedId
+                    ? "border-cocoa bg-cocoa text-background"
+                    : "border-foreground/30 hover:border-foreground",
+                )}
+              >
+                {v.title} · {formatPrice(v.price, currency)}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      )}
+
       <div className="flex gap-4">
         <div className="flex h-12 items-center border border-foreground/30">
           <button
@@ -42,7 +79,7 @@ export default function AddToCart({ variantId, available }: { variantId?: string
         <button
           onClick={onAdd}
           disabled={!canBuy || adding}
-          className="h-12 flex-1 bg-cocoa px-8 text-[11px] font-medium uppercase tracking-[0.2em] text-background transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-60"
+          className="h-12 flex-1 bg-cocoa px-6 text-[11px] font-medium uppercase tracking-[0.2em] text-background transition-colors hover:bg-foreground/85 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {label}
         </button>

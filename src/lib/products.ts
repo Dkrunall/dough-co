@@ -24,13 +24,19 @@ export const MORE_CATEGORIES: { slug: Category; label: string }[] = [
   { slug: "tarts", label: "Tarts" },
 ];
 
+export type Variant = { id: string; title: string; price: number; available: boolean };
+
+/** Shown wherever a product has no photo yet. */
+export const PLACEHOLDER_IMAGE = "/assets/images/logo-brown.png";
+
 export type Product = {
   slug: string;
   name: string;
+  /** Lowest variant price. */
   price: number;
   currency: string;
-  /** Shopify variant added to the cart; absent for local placeholder products. */
-  variantId?: string;
+  /** Shopify variants (sizes); empty for local placeholder products. */
+  variants: Variant[];
   available: boolean;
   category?: Category;
   image: string;
@@ -43,7 +49,7 @@ export type Product = {
 const IMG = "/assets/mock";
 
 /** Placeholder catalog shown until Shopify is connected (see .env.example). */
-const LOCAL_PRODUCTS: Omit<Product, "currency" | "available">[] = [
+const LOCAL_PRODUCTS: Omit<Product, "currency" | "available" | "variants">[] = [
   {
     slug: "signature-chocolate-chunk-cookie",
     name: "Signature Chocolate Chunk Cookie",
@@ -118,7 +124,18 @@ const LOCAL_PRODUCTS: Omit<Product, "currency" | "available">[] = [
   },
 ];
 
-export const PRODUCTS: Product[] = LOCAL_PRODUCTS.map((p) => ({ ...p, currency: "AED", available: true }));
+export const PRODUCTS: Product[] = LOCAL_PRODUCTS.map((p) => ({
+  ...p,
+  currency: "AED",
+  available: true,
+  variants: [],
+}));
+
+/** "AED 28", or "From AED 28" when sizes are priced differently. */
+export function productPrice(p: Product) {
+  const varies = new Set(p.variants.map((v) => v.price)).size > 1;
+  return `${varies ? "From " : ""}${formatPrice(p.price, p.currency)}`;
+}
 
 /** "AED 24", or "AED 24.50" when there are fils. */
 export function formatPrice(price: number | string, currency = "AED") {

@@ -50,7 +50,7 @@ const PRODUCT_FIELDS = /* GraphQL */ `
     featuredImage { url altText }
     images(first: 8) { nodes { url altText } }
     priceRange { minVariantPrice { amount currencyCode } }
-    variants(first: 1) { nodes { id availableForSale } }
+    variants(first: 20) { nodes { id title availableForSale price { amount currencyCode } } }
   }
 `;
 
@@ -62,7 +62,7 @@ export type ShopifyProduct = {
   featuredImage: ShopifyImage | null;
   images: { nodes: ShopifyImage[] };
   priceRange: { minVariantPrice: Money };
-  variants: { nodes: { id: string; availableForSale: boolean }[] };
+  variants: { nodes: { id: string; title: string; availableForSale: boolean; price: Money }[] };
 };
 
 export async function fetchProducts(collectionHandle?: string) {
