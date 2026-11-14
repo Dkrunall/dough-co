@@ -35,8 +35,20 @@ export default function CartProvider({ enabled, children }: { enabled: boolean; 
 
   useEffect(() => {
     if (!enabled) return;
+
+    // Shopify's "return to cart" lands on /?cart=open (via the redirect in the Shopify theme).
+    const url = new URL(window.location.href);
+    const openFromUrl = url.searchParams.get("cart") === "open";
+    if (openFromUrl) {
+      url.searchParams.delete("cart");
+      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+    }
+
     loadCart()
-      .then(setCart)
+      .then((loaded) => {
+        setCart(loaded);
+        if (openFromUrl) setOpen(true);
+      })
       .catch(() => setCart(null));
   }, [enabled]);
 
