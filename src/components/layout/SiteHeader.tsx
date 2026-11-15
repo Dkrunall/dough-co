@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, User } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
+import MobileMenu from "@/components/layout/MobileMenu";
 import { isCustomerAccountConfigured } from "@/lib/customer-account";
 import { accountUrl } from "@/lib/shopify";
 
@@ -12,10 +13,20 @@ const NAV = [
 ];
 
 export default function SiteHeader() {
+  const accountHref = isCustomerAccountConfigured ? "/account" : accountUrl;
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line/60 bg-background/95 backdrop-blur">
+    // No backdrop-blur on the header: it would trap the mobile menu's fixed overlay inside it.
+    <header className="sticky top-0 z-40 border-b border-line/60 bg-background">
       <div className="page-container grid h-20 grid-cols-[1fr_auto_1fr] items-center md:h-24">
-        <nav className="flex items-center gap-4 text-[10px] font-medium uppercase tracking-[0.18em] md:gap-12 md:text-[11px]">
+        {/* Phones: menu button + search. Desktop: text links. */}
+        <div className="flex items-center gap-4 md:hidden">
+          <MobileMenu nav={NAV} accountHref={accountHref} />
+          <Link href="/search" aria-label="Search" className="transition-colors hover:text-accent">
+            <Search className="size-[18px]" strokeWidth={1.4} />
+          </Link>
+        </div>
+        <nav className="hidden items-center gap-12 text-[11px] font-medium uppercase tracking-[0.18em] md:flex">
           {NAV.map((item) => (
             <Link key={item.href} href={item.href} className="whitespace-nowrap transition-colors hover:text-accent">
               {item.label}
@@ -34,21 +45,20 @@ export default function SiteHeader() {
           />
         </Link>
 
-        <div className="flex items-center justify-end gap-3 md:gap-7">
-          <Link href="/search" aria-label="Search" className="transition-colors hover:text-accent">
-            <Search className="size-[18px] md:size-5" strokeWidth={1.4} />
+        <div className="flex items-center justify-end gap-4 md:gap-7">
+          <Link href="/search" aria-label="Search" className="hidden transition-colors hover:text-accent md:block">
+            <Search className="size-5" strokeWidth={1.4} />
           </Link>
-          {isCustomerAccountConfigured ? (
-            <Link href="/account" aria-label="My account" className="transition-colors hover:text-accent">
-              <User className="size-[18px] md:size-5" strokeWidth={1.4} />
-            </Link>
-          ) : (
-            accountUrl && (
-              <a href={accountUrl} aria-label="My account" className="transition-colors hover:text-accent">
+          {accountHref &&
+            (accountHref.startsWith("/") ? (
+              <Link href={accountHref} aria-label="My account" className="transition-colors hover:text-accent">
+                <User className="size-[18px] md:size-5" strokeWidth={1.4} />
+              </Link>
+            ) : (
+              <a href={accountHref} aria-label="My account" className="transition-colors hover:text-accent">
                 <User className="size-[18px] md:size-5" strokeWidth={1.4} />
               </a>
-            )
-          )}
+            ))}
           <CartButton />
         </div>
       </div>
